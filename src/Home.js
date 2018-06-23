@@ -8,7 +8,7 @@ export class Home extends Component {
     render() {
         return (
             <div className="container">
-                <div style={{marginTop: "350px"}}>
+                <div style={{marginTop: "300px"}}>
                     <h1 className="light">Find work at a startup as a Juggling Jack.</h1>
                     <h3 className="light">Apply to awesome technical and non technical generalist jobs<br /> at startups around the world.</h3>
                 </div>
