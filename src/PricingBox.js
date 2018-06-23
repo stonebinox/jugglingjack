@@ -5,11 +5,6 @@ export class PricingBox extends Component {
         super(props);
     }
 
-    generatePoints() {
-        var points = this.props.data.points;
-
-    }
-
     render() {
         return (
             <div className="large-box white-overlay">
@@ -25,7 +20,7 @@ export class PricingBox extends Component {
                 })}
                 <br/>
                 <div className="text-center">
-                    <button type="button" className="btn btn-primary">Subscribe</button>
+                    <button type="button" className="btn btn-primary bold">Subscribe</button>
                 </div>
                 <br/>
             </div>
