@@ -1,5 +1,25 @@
 body {
+  background: #000000 url(background.jpg) fixed no-repeat center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Raleway', sans-serif;
+}
+
+.navbar {
+  background-color: #ffffff;
+}
+
+.navlinks {
+  font-weight: bold;
+  color: #565A5F;
+}
+
+.btn-goto {
+  color: #F4FBB2;
+  background-color: #565A5F;
+  font-weight: 700;
+  
 }
