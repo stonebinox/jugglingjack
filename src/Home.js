@@ -7,10 +7,12 @@ export class Home extends Component {
 
     render() {
         return (
-            <div className="container">
-                <div style={{marginTop: "400px"}}>
-                    <h1 className="light">Find work as a generalist at a startup.</h1>
-                    <h3 className="light">Apply to awesome technical and non technical generalist jobs<br /> at startups around the world.</h3>
+            <div className="layer" active={this.props.active}>
+                <div className="container">
+                    <div style={{marginTop: "400px"}}>
+                        <h1 className="light text-shadow">Find work as a generalist at a startup.</h1>
+                        <h3 className="light text-shadow">Apply to awesome technical and non technical generalist jobs<br /> at startups around the world.</h3>
+                    </div>
                 </div>
             </div>
         );

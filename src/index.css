@@ -26,18 +26,64 @@ body {
 h1 {
   font-size: 50px;
   font-weight: 700;
-  text-shadow: 0px 0px 2px #000000;
 }
 
 h3 {
   font-weight: 700;
-  text-shadow: 0px 0px 2px #000000;
+}
+
+h4 {
+  font-weight: 400;
+}
+
+.bold {
+  font-weight: 700;
 }
 
 .light {
   color: #efefef;
 }
 
+.text-shadow {
+  text-shadow: 0px 0px 2px #000000;
+}
+
 .icon-bar {
   background-color: #333333;
+}
+
+.layer {
+  position: fixed;
+  top: 50px;
+  left: 100%;
+  height: 95%;
+  width: 100%;
+  overflow: auto;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+
+.layer[active="true"] {
+  left: 0;
+}
+
+.white-overlay {
+  background: rgb(255, 255, 255, 0.8);
+}
+
+.large-box {
+  min-width: 250px;
+  width: 100%;
+  height: auto;
+  border: 10px solid #ffffff;
+  padding: 10px;
+}
+
+.small {
+  font-size: smaller;
+}
+
+.point {
+  margin: 20px;
 }
