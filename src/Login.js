@@ -9,6 +9,8 @@ export class Login extends Component {
         return (
             <div className="layer white-overlay" active={this.props.active}>
                 <div className="container">
+                    <br/>
+                    <br/>
                     <h1 className="text-center">Login to your account</h1>
                     <br/>
                     <br/>
