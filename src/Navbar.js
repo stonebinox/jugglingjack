@@ -20,13 +20,13 @@ export class Navbar extends Component {
                         <span className="icon-bar"></span> 
                         </button>
                         <a className="navbar-brand" href="#" onClick={this.handleLogoClick}>
-                            <div className="row">
-                                <div className="col-sm-3"><img src="JJ-Logo.png" className="img-responsive" width="40" style={{marginTop: "-10px"}} /></div>
-                                <div className="col-sm-9"><img src="JJ-Wordmark.png" alt="Juggling Jack" className="img-responsive" width="200" style={{marginTop: "-5px", marginLeft: "-20px"}} /></div>
-                            </div>
+                            <img src="JJ-Logo.png" className="img-responsive" width="40" style={{marginTop: "-5px"}} />
                         </a>
                     </div>
                     <div className="collapse navbar-collapse" id="myNavbar">
+                        <ul className="nav navbar-nav">
+                            <li className="active"><a href="#" onClick={this.handleLogoClick}><img src="JJ-Wordmark.png" alt="Juggling Jack" className="img-responsive" width="200" /></a></li>
+                        </ul>
                         <ul className="nav navbar-nav navbar-right">
                             <li><a href="javascript:void(0)" className="navlinks">Pricing</a></li>
                             <li><a href="javascript:void(0)" className="navlinks">Who is a Juggling Jack?</a></li>
