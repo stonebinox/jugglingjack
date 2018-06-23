@@ -8,8 +8,10 @@ export class Jobs extends Component {
     render() {
         return (
             <div className="layer white-overlay" active={this.props.active}>
-                <div className="container">
-                    <h1 className="text-center light text-shadow">Job Listings</h1>
+                <div className="container-fluid">
+                    <h3>Featured jobs</h3>
+                    <hr />
+                    <p>No listings yet! Check back for updates.</p>
                 </div>
             </div>
         );

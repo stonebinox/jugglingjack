@@ -3,6 +3,7 @@ import { Navbar } from './Navbar.js';
 import { Home } from './Home.js';
 import { Jobs } from './Jobs.js';
 import { Pricing } from './Pricing.js';
+import { Login } from './Login.js';
 
 class App extends Component {
   constructor(props) {
@@ -10,7 +11,8 @@ class App extends Component {
     this.state = {
       jobsFlag: "false",
       pricingFlag: "false",
-      homeFlag: "false"
+      homeFlag: "false",
+      loginFlag: "false"
     };
     this.changeState = this.changeState.bind(this);
   }
@@ -21,23 +23,34 @@ class App extends Component {
       this.setState({
         jobsFlag: "true",
         pricingFlag: "false",
-        homeFlag: "false"
+        homeFlag: "false",
+        loginFlag: "false"
       });
       break;
       case "pricing":
       this.setState({
         jobsFlag: "false",
         pricingFlag: "true",
-        homeFlag: "false"
+        homeFlag: "false",
+        loginFlag: "false"
       });
       break;
       case "home":
       this.setState({
         jobsFlag: "false",
         pricingFlag: "false",
-        homeFlag: "true"
+        homeFlag: "true",
+        loginFlag: "false"
       });
       break;
+      case "login":
+      this.setState({
+        jobsFlag: "false",
+        pricingFlag: "false",
+        homeFlag: "false",
+        loginFlag: "true"
+      });
+      break;  
     }
   }
 
@@ -48,6 +61,7 @@ class App extends Component {
         <Home active={this.state.homeFlag} />
         <Jobs active={this.state.jobsFlag} />
         <Pricing active={this.state.pricingFlag} />
+        <Login active={this.state.loginFlag} />
       </div>
     );
   }

@@ -12,8 +12,8 @@ export class PricingBox extends Component {
                 <br/>
                 <br/>
                 {this.props.data.points.map(function(point, i){
-                    return <div className="point">
-                        <h4 className="text-center bold" key={i}>{point.point}<br/>
+                    return <div className="point" key={i}>
+                        <h4 className="text-center bold">{point.point}<br/>
                         <span className="small">{point.description}</span>
                     </h4>
                     </div>;

@@ -36,7 +36,7 @@ export class Navbar extends Component {
                             <li><a href="javascript:void(0)" className="navlinks" onClick={() => this.setLayer('jobs')}>Jobs</a></li>
                             <li><a href="javascript:void(0)" className="navlinks" onClick={() => this.setLayer('pricing')}>Pricing</a></li>
                             <li><a href="javascript:void(0)" className="navlinks">Who is a Juggling Jack?</a></li>
-                            <li><a href="javascript:void(0)" className="navlinks">Login</a></li>
+                            <li><a href="javascript:void(0)" className="navlinks" onClick={() => this.setLayer('login')}>Login</a></li>
                             <li><button type="button" className="btn btn-primary navbar-btn btn-goto">Sign up!</button></li>
                             <li><a></a></li>
                         </ul>
