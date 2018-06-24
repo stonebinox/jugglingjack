@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-
 export class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
             emailError: "form-group",
-            passwordError: "form-group"
+            passwordError: "form-group",
+            errorDisplay: "none"
         };
         this.loginButton = this.loginButton.bind(this);
     }
@@ -23,15 +23,24 @@ export class Login extends Component {
                 this.setState({
                     passwordError: "form-group"
                 }); 
+                var that = this;
                 fetch("https://jugglingjack-backend.herokuapp.com/api/login", {
                     method: "POST",
                     body: "email=" + email + "&password=" + password,
                     mode: "cors"
                 })
                 .then(function(response){
-                    console.log(response);
-                    response.json().then(function(data){
+                    response.text().then(function(data){
+                        data = data.trim();
                         console.log(data);
+                        switch (data) {
+                            case "INVALID_PARAMETERS":
+                            default:
+                            that.setState({
+                                errorDisplay: "block"
+                            });
+                            break;
+                        }
                     });
                 });
             }
@@ -58,6 +67,9 @@ export class Login extends Component {
                     <br/>
                     <br/>
                     <div className="large-box white-overlay">
+                        <div className="alert alert-danger text-center" style={{display: this.state.errorDisplay}}>
+                            <strong>Incorrect credentials</strong> Please verify the details and try again.
+                        </div>
                         <form name="login">
                             <div className={this.state.emailError}>
                                 <label htmlFor="email">Email</label>

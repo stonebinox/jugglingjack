@@ -4,6 +4,7 @@ import { Home } from './Home.js';
 import { Jobs } from './Jobs.js';
 import { Pricing } from './Pricing.js';
 import { Login } from './Login.js';
+import { SignUp } from './SignUp.js';
 
 class App extends Component {
   constructor(props) {
@@ -12,7 +13,8 @@ class App extends Component {
       jobsFlag: "false",
       pricingFlag: "false",
       homeFlag: "false",
-      loginFlag: "false"
+      loginFlag: "false",
+      signupFlag: "false"
     };
     this.changeState = this.changeState.bind(this);
   }
@@ -24,7 +26,8 @@ class App extends Component {
         jobsFlag: "true",
         pricingFlag: "false",
         homeFlag: "false",
-        loginFlag: "false"
+        loginFlag: "false",
+        signupFlag: "false"
       });
       break;
       case "pricing":
@@ -32,7 +35,8 @@ class App extends Component {
         jobsFlag: "false",
         pricingFlag: "true",
         homeFlag: "false",
-        loginFlag: "false"
+        loginFlag: "false",
+        signupFlag: "false"
       });
       break;
       case "home":
@@ -40,7 +44,8 @@ class App extends Component {
         jobsFlag: "false",
         pricingFlag: "false",
         homeFlag: "true",
-        loginFlag: "false"
+        loginFlag: "false",
+        signupFlag: "false"
       });
       break;
       case "login":
@@ -48,9 +53,19 @@ class App extends Component {
         jobsFlag: "false",
         pricingFlag: "false",
         homeFlag: "false",
-        loginFlag: "true"
+        loginFlag: "true",
+        signupFlag: "false"
       });
       break;  
+      case "signup":
+      this.setState({
+        jobsFlag: "false",
+        pricingFlag: "false",
+        homeFlag: "false",
+        loginFlag: "false",
+        signupFlag: "true"
+      });
+      break;
     }
   }
 
@@ -62,6 +77,7 @@ class App extends Component {
         <Jobs active={this.state.jobsFlag} />
         <Pricing active={this.state.pricingFlag} />
         <Login active={this.state.loginFlag} />
+        <SignUp active={this.state.signupFlag} />
       </div>
     );
   }
