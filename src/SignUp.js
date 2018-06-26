@@ -15,9 +15,17 @@ export class SignUp extends Component {
             cityFlag: "form-group",
             countryFlag: "form-group",
             companyFlag: "form-group",
-            companyDescriptionFlag: "form-group"
+            companyDescriptionFlag: "form-group",
+            signupData: null
         };  
         this.personalClick = this.personalClick.bind(this);
+        this.workClick = this.workClick.bind(this);
+        this.changeLayout = this.changeLayout.bind(this);
+    }
+
+    changeLayout() {
+        var role = document.signup2.role.value;
+        console.log(role);
     }
 
     personalClick() {
@@ -41,7 +49,13 @@ export class SignUp extends Component {
                     });
                     var password2 = document.signup.password2.value;
                     if (password2 === password1) {
+                        var data = {
+                            name: name,
+                            email: email,
+                            password: password1
+                        };
                         this.setState({
+                            signupData: data,
                             personalCollapse: "panel panel-primary collapse",
                             workCollapse: "panel panel-info collapse collapse in"
                         });
@@ -69,6 +83,10 @@ export class SignUp extends Component {
                 nameFlag: "form-group has-error"
             });
         }
+    }
+
+    workClick() {
+        
     }
 
     render() {
@@ -114,7 +132,7 @@ export class SignUp extends Component {
                             <form name="signup2" autoComplete="off">
                                 <div className={this.state.roleFlag}>
                                     <label htmlFor="role">You</label>
-                                    <select name="role" id="role" className="form-control">
+                                    <select name="role" id="role" className="form-control" onChange={this.changeLayout}>
                                         <option value="-1">Select option</option>
                                         <option value="1">are looking for a generalist</option>
                                         <option value="11">are a technical generalist</option>
@@ -139,12 +157,18 @@ export class SignUp extends Component {
                                 </div>
                                 <br/>
                                 <div className="text-center">
-                                    <button className="btn btn-info bold">Last step <span className="glyphicon glyphicon-menu-right"></span></button>
+                                    <button type="button" className="btn btn-info bold" onClick={this.workClick}>Last step <span className="glyphicon glyphicon-menu-right"></span></button>
                                 </div>
                             </form>
                         </div>
                     </div>
                     <br />
+                    <div className={this.state.planCollapse}>
+                        <div className="panel-heading bold text-center">Select Your Plan</div>
+                        <div className="panel-body">
+
+                        </div>
+                    </div>
                 </div>
             </div>
         );
