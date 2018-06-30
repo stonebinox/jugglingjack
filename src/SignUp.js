@@ -17,11 +17,13 @@ export class SignUp extends Component {
             countryFlag: "form-group",
             companyFlag: "form-group",
             companyDescriptionFlag: "form-group",
+            signupButtonFlag: "block",
             signupData: null
         };  
         this.personalClick = this.personalClick.bind(this);
         this.workClick = this.workClick.bind(this);
         this.changeLayout = this.changeLayout.bind(this);
+        this.planClick = this.planClick.bind(this);
     }
 
     changeLayout() {
@@ -60,7 +62,8 @@ export class SignUp extends Component {
                         var data = {
                             name: name,
                             email: email,
-                            password: password1
+                            password1: password1,
+                            password2: password2
                         };
                         this.setState({
                             signupData: data,
@@ -173,6 +176,36 @@ export class SignUp extends Component {
         }
     }
 
+    planClick() {
+        var planID = document.signup3.plan.value;
+        if (planID != -1) {
+            var data = this.state.signupData;
+            data.plan_id = planID;
+            this.setState({
+                planFlag: "form-group",
+                signupData: data,
+                signupButtonFlag: "none"
+            });
+            console.log(this.state.signupData);
+            $.ajax({
+                url: "https://jugglingjack-backend.herokuapp.com/api/signup",
+                data: this.state.signupData,
+                method: "post",
+                error: function(error) {
+                    console.log(error);
+                },
+                success: function(response) {
+                    console.log(response);
+                }
+            });
+        }
+        else {
+            this.setState({
+                planFlag: "form-group has-error"
+            });
+        }
+    }
+
     render() {
         return (
             <div className="layer white-overlay" active={this.props.active}>
@@ -261,10 +294,11 @@ export class SignUp extends Component {
                                         <option value="22">Pro - $14/month</option>
                                     </select>
                                 </div>
+                                <br/>
                                 <p className="text-center"><small>By clicking <strong>create</strong>, you agree to our <a href="#">terms and conditions</a>.</small></p>
                                 <br/>
                                 <div className="text-center">
-                                    <button type="button" className="btn btn-success bold">Create account!</button>
+                                    <button type="button" className="btn btn-success bold" style={{display: this.state.signupButtonFlag}} onClick={this.planClick}>Create account!</button>
                                 </div>
                             </form>
                         </div>
