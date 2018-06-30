@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import $ from 'jquery';
 
 export class Login extends Component {
     constructor(props) {
@@ -6,7 +7,8 @@ export class Login extends Component {
         this.state = {
             emailError: "form-group",
             passwordError: "form-group",
-            errorDisplay: "none"
+            errorDisplay: "none",
+            buttonStatus: ""
         };
         this.loginButton = this.loginButton.bind(this);
     }
@@ -14,7 +16,7 @@ export class Login extends Component {
     loginButton() {
         var email = document.login.email.value;
         email = email.trim();
-        if ((email != "") && (email != null) && (email != undefined)) {
+        if ((email !== "") && (email !== null) && (email !== undefined)) {
             this.setState({
                 emailError: "form-group"
             }); 
@@ -24,24 +26,36 @@ export class Login extends Component {
                     passwordError: "form-group"
                 }); 
                 var that = this;
-                fetch("https://jugglingjack-backend.herokuapp.com/api/login", {
-                    method: "POST",
-                    body: "email=" + email + "&password=" + password,
-                    mode: "cors"
-                })
-                .then(function(response){
-                    response.text().then(function(data){
-                        data = data.trim();
-                        console.log(data);
-                        switch (data) {
+                $.ajax({
+                    url: "https://jugglingjack-backend.herokuapp.com/api/login",
+                    // xhrFields: {
+                    //     withCredentials: true
+                    // },
+                    method: "post",
+                    data: {
+                        email: email,
+                        password: password
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    },
+                    success: function(response){
+                        response = $.trim(response);
+                        switch(response) {
                             case "INVALID_PARAMETERS":
+                            case "INVALID_USER_CREDENTIALS":
                             default:
                             that.setState({
                                 errorDisplay: "block"
                             });
                             break;
+                            case "AUTHENTICATE_USER":
+                            that.setState({
+                                errorDisplay: "none"
+                            });
+                            break;
                         }
-                    });
+                    }
                 });
             }
             else {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import $ from 'jquery';
 
 export class SignUp extends Component {
     constructor(props) {
@@ -24,21 +25,28 @@ export class SignUp extends Component {
     }
 
     changeLayout() {
-        var role = document.signup2.role.value;
-        console.log(role);
+        var role = parseInt(document.signup2.role.value);
+        if (role != 2) {
+            $("#company").attr("disabled", "true");
+            $("#companydesc").attr("disabled", "true");
+        }
+        else {
+            $("#company").removeAttr("disabled");
+            $("#companydesc").removeAttr("disabled");
+        }
     }
 
     personalClick() {
         var name = document.signup.name.value;
         name = name.trim();
-        if (name != "") {
+        if (name !== "") {
             this.setState({
                 nameFlag: "form-group"
             });
             var email = document.signup.signupemail.value;
             email = email.trim();
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            if ((email != "") && (re.test(email))) {
+            if ((email !== "") && (re.test(email))) {
                 this.setState({
                     emailFlag: "form-group"
                 });
@@ -86,7 +94,83 @@ export class SignUp extends Component {
     }
 
     workClick() {
-        
+        var role = document.signup2.role.value;
+        if (role !=  -1) {
+            this.setState({
+                roleFlag: "form-group"
+            });
+            var city = $.trim(document.signup2.city.value);
+            if (city != "") {
+                this.setState({
+                    cityFlag: "form-group"
+                });
+                var country = $.trim(document.signup2.country.value);
+                if (country != "") {
+                    this.setState({
+                        countryFlag: "form-group"
+                    });
+                    var company = "";
+                    var companyDescription = "";
+                    var continueFlag = false;
+                    if (role == 2) {
+                        company = $.trim(document.signup2.company.value);
+                        if (company != "") {
+                            this.setState({
+                                companyFlag: "form-group"
+                            });
+                            companyDescription = $.trim(document.signup2.companydesc.value);
+                            if (companyDescription != "") {
+                                this.setState({
+                                    companyDescriptionFlag: "form-group"
+                                });    
+                                continueFlag = true;
+                            }
+                            else {
+                                this.setState({
+                                    companyDescriptionFlag: "form-group has-error"
+                                });    
+                            }
+                        }
+                        else {
+                            this.setState({
+                                companyFlag: "form-group has-error"
+                            });
+                        }
+                    }
+                    else {
+                        continueFlag = true;
+                    }
+                    if (continueFlag) {
+                        var data = this.state.signupData;
+                        data.admin_id = role;
+                        data.city = city;
+                        data.country = country;
+                        data.company = company;
+                        data.company_description = companyDescription;
+                        this.setState({
+                            signupData: data,
+                            workCollapse: "panel panel-info collapse",
+                            planCollapse: "panel panel-success collapse in"
+                        });
+                    }
+                }
+                else {
+                    this.setState({
+                        countryFlag: "form-group has-error"
+                    });
+                }
+            }
+            else {
+                this.setState({
+                    cityFlag: "form-group has-error"
+                });
+            }
+        }
+        else {
+            this.setState({
+                roleFlag: "form-group has-error"
+            });
+        }
     }
 
     render() {
@@ -134,9 +218,10 @@ export class SignUp extends Component {
                                     <label htmlFor="role">You</label>
                                     <select name="role" id="role" className="form-control" onChange={this.changeLayout}>
                                         <option value="-1">Select option</option>
-                                        <option value="1">are looking for a generalist</option>
-                                        <option value="11">are a technical generalist</option>
-                                        <option value="21">are a non-technical generalist</option>
+                                        <option value="2">are looking for a technical generalist</option>
+                                        <option value="2">are looking for a non-technical generalist</option>
+                                        <option value="12">are a technical generalist</option>
+                                        <option value="22">are a non-technical generalist</option>
                                     </select>
                                 </div>
                                 <div className={this.state.cityFlag}>
@@ -166,7 +251,21 @@ export class SignUp extends Component {
                     <div className={this.state.planCollapse}>
                         <div className="panel-heading bold text-center">Select Your Plan</div>
                         <div className="panel-body">
-
+                            <form name="signup3" autoComplete="off">
+                                <div className={this.state.planFlag}>
+                                    <label htmlFor="plan">Select plan</label>
+                                    <select name="plan" id="plan" className="form-control">
+                                        <option value="-1">Select plan</option>
+                                        <option value="2">Free</option>
+                                        <option value="12">Basic</option>
+                                        <option value="22">Pro</option>
+                                    </select>
+                                </div>
+                                <br/>
+                                <div className="text-center">
+                                    <button type="button" className="btn btn-success bold">Create account!</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

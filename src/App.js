@@ -66,6 +66,9 @@ class App extends Component {
         signupFlag: "true"
       });
       break;
+      default:
+      //do nothing
+      break;
     }
   }
 

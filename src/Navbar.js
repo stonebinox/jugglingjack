@@ -24,13 +24,13 @@ export class Navbar extends Component {
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span> 
                         </button>
-                        <a className="navbar-brand" href="#" onClick={this.handleLogoClick}>
-                            <img src="JJ-Logo.png" className="img-responsive" width="30" style={{marginTop: "-5px"}} />
+                        <a className="navbar-brand" href="#home" onClick={this.handleLogoClick}>
+                            <img src="JJ-Logo.png" className="img-responsive" width="30" style={{marginTop: "-5px"}} alt="Juggling Jack"/>
                         </a>
                     </div>
                     <div className="collapse navbar-collapse" id="myNavbar">
                         <ul className="nav navbar-nav" style={{marginLeft: "-25px"}}>
-                            <li><a href="#" onClick={this.handleLogoClick}><img src="JJ-Wordmark.png" alt="Juggling Jack" className="img-responsive" width="115" /></a></li>
+                            <li><a href="#home" onClick={this.handleLogoClick}><img src="JJ-Wordmark.png" alt="Juggling Jack" className="img-responsive" width="115" /></a></li>
                         </ul>
                         <ul className="nav navbar-nav navbar-right">
                             <li><a href="javascript:void(0)" className="navlinks" onClick={() => this.setLayer('jobs')}>Jobs</a></li>
