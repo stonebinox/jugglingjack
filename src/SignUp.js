@@ -256,9 +256,9 @@ export class SignUp extends Component {
                                     <label htmlFor="plan">Select plan</label>
                                     <select name="plan" id="plan" className="form-control">
                                         <option value="-1">Select plan</option>
-                                        <option value="2">Free</option>
-                                        <option value="12">Basic</option>
-                                        <option value="22">Pro</option>
+                                        <option value="2">Free - $0/month</option>
+                                        <option value="12">Basic - $9/month</option>
+                                        <option value="22">Pro - $14/month</option>
                                     </select>
                                 </div>
                                 <br/>
