@@ -261,7 +261,7 @@ export class SignUp extends Component {
                                         <option value="22">Pro - $14/month</option>
                                     </select>
                                 </div>
-                                <p className="text-center"><small>By clicking <strong>create</strong>, you agree to our <a href="#">terms and conditions</a>.</p>
+                                <p className="text-center"><small>By clicking <strong>create</strong>, you agree to our <a href="#">terms and conditions</a>.</small></p>
                                 <br/>
                                 <div className="text-center">
                                     <button type="button" className="btn btn-success bold">Create account!</button>
