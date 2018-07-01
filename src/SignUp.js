@@ -8,6 +8,8 @@ export class SignUp extends Component {
             personalCollapse: "panel panel-primary collapse in",
             workCollapse: "panel panel-info collapse",
             planCollapse: "panel panel-success collapse",
+            payCollapse: "panel panel-success collapse",
+            amount: 0,
             nameFlag: "form-group",
             emailFlag: "form-group",
             password1Flag: "form-group",
@@ -17,8 +19,11 @@ export class SignUp extends Component {
             countryFlag: "form-group",
             companyFlag: "form-group",
             companyDescriptionFlag: "form-group",
-            signupButtonFlag: "block",
-            signupData: null
+            signupButtonFlag: "btn btn-success bold",
+            signupData: null,
+            alertFlag: "none",
+            passedPlanID: null,
+            user_id: null
         };  
         this.personalClick = this.personalClick.bind(this);
         this.workClick = this.workClick.bind(this);
@@ -150,11 +155,22 @@ export class SignUp extends Component {
                         data.country = country;
                         data.company = company;
                         data.company_description = companyDescription;
+                        var passedPlanID = null;
+                        if (role != 2) {
+                            passedPlanID = 2;
+                        }
                         this.setState({
                             signupData: data,
                             workCollapse: "panel panel-info collapse",
-                            planCollapse: "panel panel-success collapse in"
+                            planCollapse: "panel panel-success collapse in",
+                            passedPlanID: passedPlanID
                         });
+                        if (role != 2) {
+                            var that = this;
+                            setTimeout(function(){
+                                that.planClick();
+                            }, 500);
+                        }
                     }
                 }
                 else {
@@ -177,25 +193,73 @@ export class SignUp extends Component {
     }
 
     planClick() {
-        var planID = document.signup3.plan.value;
+        var planID = null;
+        if (this.state.passedPlanID == null) {
+            planID = document.signup3.plan.value;
+        }
+        else {
+            planID = this.state.passedPlanID;
+        }
         if (planID != -1) {
             var data = this.state.signupData;
             data.plan_id = planID;
             this.setState({
                 planFlag: "form-group",
                 signupData: data,
-                signupButtonFlag: "none"
+                signupButtonFlag: "btn btn-success bold disabled"
             });
             console.log(this.state.signupData);
+            var that = this;
             $.ajax({
                 url: "https://jugglingjack-backend.herokuapp.com/api/signup",
                 data: this.state.signupData,
                 method: "post",
                 error: function(error) {
                     console.log(error);
+                    that.setState({
+                        signupButtonFlag: "btn btn-success bold",
+                        alertFlag: "block"
+                    });
                 },
                 success: function(response) {
                     console.log(response);
+                    that.setState({
+                        signupButtonFlag: "btn btn-success bold",
+                        alertFlag: "none"
+                    });
+                    response = $.trim(response);
+                    switch (response) {
+                        case "INVALID_PARAMETERS":
+                        default:
+                        if (response.indexOf("ACCOUNT_CREATED_") != -1) {
+                            var sp = response.split("ACCOUNT_CREATED_");
+                            var userID = sp[1];
+                            var planID = data.plan_id;
+                            if ((planID != 2) && (planID != null)) {
+                                var amount = 0;
+                                switch (parseInt(planID)) {
+                                    case 12:
+                                    amount = 9;
+                                    break;
+                                    case 22:
+                                    amount = 14;
+                                    break;
+                                }
+                                that.setState({
+                                    user_id: userID,
+                                    planCollapse: "panel panel-success collapse",
+                                    payCollapse: "panel panel-success collapse in",
+                                    amount: amount
+                                });
+                            }
+                        }
+                        else {
+                            that.setState({
+                                alertFlag: "block"
+                            });
+                        }
+                        break;
+                    }
                 }
             });
         }
@@ -218,6 +282,9 @@ export class SignUp extends Component {
                     <div className={this.state.personalCollapse}>
                         <div className="panel-heading text-center bold">Personal Details</div>
                         <div className="panel-body">
+                            <div className="alert alert-danger text-center" style={{display: this.state.alertFlag}}>
+                                <strong>Problem</strong> Something went wrong while creating your account. Please try again later.
+                            </div>
                             <form name="signup" autoComplete="off">
                                 <div className={this.state.nameFlag}>
                                     <label htmlFor="name">Full name</label>
@@ -246,6 +313,9 @@ export class SignUp extends Component {
                     <div className={this.state.workCollapse}>
                         <div className="panel-heading text-center bold">Work Information</div>
                         <div className="panel-body">
+                            <div className="alert alert-danger text-center" style={{display: this.state.alertFlag}}>
+                                <strong>Problem</strong> Something went wrong while creating your account. Please try again later.
+                            </div>
                             <form name="signup2" autoComplete="off">
                                 <div className={this.state.roleFlag}>
                                     <label htmlFor="role">You</label>
@@ -284,6 +354,9 @@ export class SignUp extends Component {
                     <div className={this.state.planCollapse}>
                         <div className="panel-heading bold text-center">Select Your Plan</div>
                         <div className="panel-body">
+                            <div className="alert alert-danger text-center" style={{display: this.state.alertFlag}}>
+                                <strong>Problem</strong> Something went wrong while creating your account. Please try again later.
+                            </div>
                             <form name="signup3" autoComplete="off">
                                 <div className={this.state.planFlag}>
                                     <label htmlFor="plan">Select plan</label>
@@ -298,9 +371,26 @@ export class SignUp extends Component {
                                 <p className="text-center"><small>By clicking <strong>create</strong>, you agree to our <a href="#">terms and conditions</a>.</small></p>
                                 <br/>
                                 <div className="text-center">
-                                    <button type="button" className="btn btn-success bold" style={{display: this.state.signupButtonFlag}} onClick={this.planClick}>Create account!</button>
+                                    <button type="button" className={this.state.signupButtonFlag} onClick={this.planClick}>Create account!</button>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                    <div className={this.state.payCollapse}>
+                        <div className="panel panel-heading bold text-center">Account Created!</div>
+                        <div className="panel-body">
+                            <h4 className="text-center">Complete Your Payment</h4>
+                            <div className="text-center">
+                            <script
+                                src="https://checkout.stripe.com/checkout.js" className="stripe-button"
+                                data-key="pk_test_AaNN3vmVBn3clhgdqGa9CMXX"
+                                data-amount={this.state.amount * 1000}
+                                data-name="Dust &amp; Co., Inc."
+                                data-description="Widget"
+                                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                                data-locale="auto">
+                            </script>
+                            </div>
                         </div>
                     </div>
                 </div>
