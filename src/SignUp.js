@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import StripeCheckout from 'react-stripe-checkout';
 
 export class SignUp extends Component {
     constructor(props) {
@@ -381,7 +382,7 @@ export class SignUp extends Component {
                         <div className="panel-body">
                             <h4 className="text-center">Complete Your Payment</h4>
                             <div className="text-center">
-                            <script
+                            {/* <script
                                 src="https://checkout.stripe.com/checkout.js" className="stripe-button"
                                 data-key="pk_test_AaNN3vmVBn3clhgdqGa9CMXX"
                                 data-amount={this.state.amount * 1000}
@@ -389,7 +390,15 @@ export class SignUp extends Component {
                                 data-description="Widget"
                                 data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
                                 data-locale="auto">
-                            </script>
+                            </script> */}
+                            <StripeCheckout
+                                name="Dust &amp; Co., Inc"
+                                description="Widget"
+                                amount={this.state.amount * 1000}
+                                
+                                token={this.onToken}
+                                stripeKey="pk_test_AaNN3vmVBn3clhgdqGa9CMXX"
+                            />
                             </div>
                         </div>
                     </div>
