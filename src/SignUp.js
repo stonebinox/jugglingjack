@@ -381,6 +381,7 @@ export class SignUp extends Component {
                         <div className="panel panel-heading bold text-center">Account Created!</div>
                         <div className="panel-body">
                             <h4 className="text-center">Complete Your Payment</h4>
+                            <br />
                             <div className="text-center">
                             {/* <script
                                 src="https://checkout.stripe.com/checkout.js" className="stripe-button"
@@ -394,10 +395,11 @@ export class SignUp extends Component {
                             <StripeCheckout
                                 name="Dust &amp; Co., Inc"
                                 description="Widget"
-                                amount={this.state.amount * 1000}
-                                
+                                amount={this.state.amount * 100}
+                                image="https://stripe.com/img/documentation/checkout/marketplace.png"
                                 token={this.onToken}
                                 stripeKey="pk_test_AaNN3vmVBn3clhgdqGa9CMXX"
+                                src="https://checkout.stripe.com/checkout.js"
                             />
                             </div>
                         </div>
