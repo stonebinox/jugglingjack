@@ -28,9 +28,6 @@ export class Login extends Component {
                 var that = this;
                 $.ajax({
                     url: "https://jugglingjack-backend.herokuapp.com/api/login",
-                    // xhrFields: {
-                    //     withCredentials: true
-                    // },
                     method: "post",
                     data: {
                         email: email,
@@ -53,6 +50,7 @@ export class Login extends Component {
                             that.setState({
                                 errorDisplay: "none"
                             });
+                            that.props.onLoggedIn(true);
                             break;
                         }
                     }

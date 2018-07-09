@@ -5,6 +5,7 @@ import { Jobs } from './Jobs.js';
 import { Pricing } from './Pricing.js';
 import { Login } from './Login.js';
 import { SignUp } from './SignUp.js';
+import { Dashboard } from './Dashboard.js';
 
 class App extends Component {
   constructor(props) {
@@ -14,9 +15,13 @@ class App extends Component {
       pricingFlag: "false",
       homeFlag: "false",
       loginFlag: "false",
-      signupFlag: "false"
+      signupFlag: "false",
+      dashboardFlag: "false",
+      loginStatus: false
     };
     this.changeState = this.changeState.bind(this);
+    this.handleSession = this.handleSession.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   changeState(data) {
@@ -27,7 +32,8 @@ class App extends Component {
         pricingFlag: "false",
         homeFlag: "false",
         loginFlag: "false",
-        signupFlag: "false"
+        signupFlag: "false",
+        dashboardFlag: "false"
       });
       break;
       case "pricing":
@@ -36,7 +42,8 @@ class App extends Component {
         pricingFlag: "true",
         homeFlag: "false",
         loginFlag: "false",
-        signupFlag: "false"
+        signupFlag: "false",
+        dashboardFlag: "false"
       });
       break;
       case "home":
@@ -45,7 +52,8 @@ class App extends Component {
         pricingFlag: "false",
         homeFlag: "true",
         loginFlag: "false",
-        signupFlag: "false"
+        signupFlag: "false",
+        dashboardFlag: "false"
       });
       break;
       case "login":
@@ -54,7 +62,8 @@ class App extends Component {
         pricingFlag: "false",
         homeFlag: "false",
         loginFlag: "true",
-        signupFlag: "false"
+        signupFlag: "false",
+        dashboardFlag: "false"
       });
       break;  
       case "signup":
@@ -63,7 +72,18 @@ class App extends Component {
         pricingFlag: "false",
         homeFlag: "false",
         loginFlag: "false",
-        signupFlag: "true"
+        signupFlag: "true",
+        dashboardFlag: "false"
+      });
+      break;
+      case "dashboard":
+      this.setState({
+        jobsFlag: "false",
+        pricingFlag: "false",
+        homeFlag: "false",
+        loginFlag: "false",
+        signupFlag: "false",
+        dashboardFlag: "true"
       });
       break;
       default:
@@ -72,15 +92,35 @@ class App extends Component {
     }
   }
 
+  handleSession(flag) {
+    if (flag) {
+      this.setState({
+        loginStatus: true
+      });
+      this.changeState("dashboard");
+    }
+    else {
+      this.setState({
+        loginStatus: false
+      });
+      this.changeState("home");
+    }
+  }
+
+  logout() {
+    this.handleSession(false);
+  }
+
   render() {
     return (
       <div>
-        <Navbar onStateChanged={this.changeState} />
+        <Navbar onStateChanged={this.changeState} loggedIn={this.state.loginStatus} logout={this.logout}/>
         <Home active={this.state.homeFlag} />
         <Jobs active={this.state.jobsFlag} />
         <Pricing active={this.state.pricingFlag} />
-        <Login active={this.state.loginFlag} />
-        <SignUp active={this.state.signupFlag} />
+        <Login active={this.state.loginFlag} onLoggedIn={this.handleSession} />
+        <SignUp active={this.state.signupFlag} layerLoad={this.changeState} />
+        <Dashboard active={this.state.dashboardFlag} />
       </div>
     );
   }

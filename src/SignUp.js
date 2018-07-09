@@ -24,7 +24,9 @@ export class SignUp extends Component {
             signupData: null,
             alertFlag: "none",
             passedPlanID: null,
-            user_id: null
+            user_id: null,
+            payFlag: "block",
+            payProcessFlag: "none"
         };  
         this.personalClick = this.personalClick.bind(this);
         this.workClick = this.workClick.bind(this);
@@ -253,6 +255,9 @@ export class SignUp extends Component {
                                     amount: amount
                                 });
                             }
+                            else {
+                                that.props.layerLoad("login");
+                            }
                         }
                         else {
                             that.setState({
@@ -272,11 +277,15 @@ export class SignUp extends Component {
     }
 
     onToken = (token) => {
-        console.log(token);
         var tokenData = token.id;
         var email = token.email;
         var productID = 2;
         var amount = this.state.amount;
+        this.setState({
+            payFlag: "none",
+            payProcessFlag: "block"
+        }); 
+        var that = this;
         $.ajax({
             method: "POST",
             url: "https://dustpay.herokuapp.com/pay",
@@ -288,20 +297,29 @@ export class SignUp extends Component {
             },
             error: function(err) {
                 console.log(err);
+                that.setState({
+                    alertFlag: "block"
+                });
             },
             success(response) {
-                console.log(response);
+                that.setState({
+                    alertFlag: "none"
+                });
+                response = response.trim();
+                switch (response) {
+                    case "INVALID_REQUEST":
+                    default:
+                    that.setState({
+                        alertFlag: "block"
+                    });
+                    break;
+                    case "PAYMENT_SUCCESSFUL":
+                    that.props.layerLoad("login");
+                    break;
+                }
+
             }
-        });
-        // fetch('https://dustpay.herokuapp.com/pay', {
-        //   method: 'POST',
-        //   body: JSON.stringify(token),
-        // }).then(response => {
-        //   response.json().then(data => {
-        //     alert(`We are in business, ${data.email}`);
-        //   });
-        // });
-        
+        });        
     }
     
     render() {
@@ -413,27 +431,26 @@ export class SignUp extends Component {
                     <div className={this.state.payCollapse}>
                         <div className="panel panel-heading bold text-center">Account Created!</div>
                         <div className="panel-body">
-                            <h4 className="text-center">Complete Your Payment</h4>
-                            <br />
-                            <div className="text-center">
-                            {/* <script
-                                src="https://checkout.stripe.com/checkout.js" className="stripe-button"
-                                data-key="pk_test_AaNN3vmVBn3clhgdqGa9CMXX"
-                                data-amount={this.state.amount * 1000}
-                                data-name="Dust &amp; Co., Inc."
-                                data-description="Widget"
-                                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                                data-locale="auto">
-                            </script> */}
-                            <StripeCheckout
-                                name="Dust &amp; Co., Inc"
-                                description="Widget"
-                                amount={this.state.amount * 100}
-                                image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                                token={this.onToken}
-                                stripeKey="pk_test_AaNN3vmVBn3clhgdqGa9CMXX"
-                                src="https://checkout.stripe.com/checkout.js"
-                            />
+                            <div className="alert alert-danger text-center" style={{display: this.state.alertFlag}}>
+                                <strong>Problem</strong> Something went wrong while creating your account. Please try again later.
+                            </div>
+                            <div style={{display: this.state.payFlag}}>
+                                <h4 className="text-center">Complete Your Payment</h4>
+                                <br />
+                                <div className="text-center">
+                                <StripeCheckout
+                                    name="Dust &amp; Co., Inc"
+                                    description="Widget"
+                                    amount={this.state.amount * 100}
+                                    image="https://stripe-images.s3.amazonaws.com/uploads/file_1BgG07KffZLOJcWolh3F4u6X.png?AWSAccessKeyId=ASIAIWVSTUX3GVF4H5ZQ&Expires=1688911608&Signature=EdRhAx58vvXD9aTPSpOCb0Ny7Gk%3D&x-amz-security-token=FQoDYXdzEO%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDEWJp9JBTMjgItjXkCK3A04M%2BdRzxPt7p1ZTqLSit0Xw8lRgUxYO%2FE%2BhbGeoF5E8NWnYwuffMV5S2ljP30hHwD8IkNKTBWEz5ghT5H21gLnIDHjIAkfrURFA0ODp%2Fe5p1SGU35ANVcbK7nPF%2BsbNaq9nqsMYSPYXoEEsnGQHvb33ClHOT1%2BBCS59shXSSivuoyg9NspHVQSusnHZBgTptkZNZax1bVzRptlPK07jFF7AZMN2Dyvj7%2B0qZYoTxBN%2FAZ4A2%2BpHplBK22mkAaht6SnARCXnAZXW9UZiRWPIbx6QJ9ni5Fu46B4aU6wzM8i%2FdVAP%2FG1Jbgi4Dl8ZH0jJWuBomC4IShOwkG6svHX9yAAnJ4lcZWO12SYjG7OjDW0q8OSR57%2FuiEdGN1PRia283kMZAWGquJBqqhHto8FmryUTEG9QZQqS38FKG7Bsj%2B8xuw1ue%2B4czaFE6WdruqxeRVT9C6Fjxpj2YEoPmSZvwe2BO1I%2F6Zh3rcN1tEUleqx57HnDxFjTbQZi7osl%2BU2npAhIQ5D6P9oOY0L573Bg2%2FGTLpoVlooIGY9FR46F2GzG7bgqJhWPB6iiFswwdQMmYG4fYUOYWf0orMqN2gU%3D"
+                                    token={this.onToken}
+                                    stripeKey="pk_test_AaNN3vmVBn3clhgdqGa9CMXX"
+                                    src="https://checkout.stripe.com/checkout.js"
+                                />
+                                </div>
+                            </div>
+                            <div style={{display: this.state.payProcessFlag}}>
+                                <div className="alert alert-info text-center"><strong>Please Wait</strong> Your payment is being processed.</div>
                             </div>
                         </div>
                     </div>

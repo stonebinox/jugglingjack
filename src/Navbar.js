@@ -4,6 +4,35 @@ export class Navbar extends Component {
     constructor(props) {
         super(props);
         this.setLayer('home');
+        var status = this.props.loggedIn;
+        if (status) {
+            var lFlag = "block";
+            var liFlag = "none";
+        }
+        else {
+            var lFlag = "none";
+            var liFlag = "block";
+        }
+        this.state = {
+            logoutFlag: lFlag,
+            linkFlag: liFlag,
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        var status = nextProps.loggedIn;
+        if (status) {
+            var lFlag = "block";
+            var liFlag = "none";
+        }
+        else {
+            var lFlag = "none";
+            var liFlag = "block";
+        }
+        this.state = {
+            logoutFlag: lFlag,
+            linkFlag: liFlag,
+        };
     }
 
     handleLogoClick() {
@@ -12,6 +41,10 @@ export class Navbar extends Component {
 
     setLayer(layer) {
         this.props.onStateChanged(layer);
+    }
+
+    logout() {
+        this.props.logout();
     }
 
     render() {
@@ -33,11 +66,12 @@ export class Navbar extends Component {
                             <li><a href="#home" onClick={this.handleLogoClick}><img src="JJ-Wordmark.png" alt="Juggling Jack" className="img-responsive" width="115" /></a></li>
                         </ul>
                         <ul className="nav navbar-nav navbar-right">
-                            <li><a href="javascript:void(0)" className="navlinks" onClick={() => this.setLayer('jobs')}>Jobs</a></li>
-                            <li><a href="javascript:void(0)" className="navlinks" onClick={() => this.setLayer('pricing')}>Pricing</a></li>
-                            <li><a href="javascript:void(0)" className="navlinks">Who is a Juggling Jack?</a></li>
-                            <li><a href="javascript:void(0)" className="navlinks" onClick={() => this.setLayer('login')}>Login</a></li>
-                            <li><button type="button" className="btn btn-primary navbar-btn btn-goto" onClick={() => this.setLayer('signup')}>Sign up!</button></li>
+                            <li style={{display: this.state.linkFlag}}><a href="javascript:void(0)" className="navlinks" onClick={() => this.setLayer('jobs')}>Jobs</a></li>
+                            <li style={{display: this.state.linkFlag}}><a href="javascript:void(0)" className="navlinks" onClick={() => this.setLayer('pricing')}>Pricing</a></li>
+                            <li style={{display: this.state.linkFlag}}><a href="javascript:void(0)" className="navlinks">Who is a Juggling Jack?</a></li>
+                            <li style={{display: this.state.linkFlag}}><a href="javascript:void(0)" className="navlinks" onClick={() => this.setLayer('login')}>Login</a></li>
+                            <li style={{display: this.state.linkFlag}}><button type="button" className="btn btn-primary navbar-btn btn-goto" onClick={() => this.setLayer('signup')}>Sign up!</button></li>
+                            <li style={{display: this.state.logoutFlag}}><button type="button" className="btn btn-primary navbar-btn btn-goto" onClick={() => this.logout()}><span className="glyphicon glyphicon-log-out"></span> Log out</button></li>
                             <li><a></a></li>
                         </ul>
                     </div>
