@@ -271,6 +271,39 @@ export class SignUp extends Component {
         }
     }
 
+    onToken = (token) => {
+        console.log(token);
+        var tokenData = token.id;
+        var email = token.email;
+        var productID = 2;
+        var amount = this.state.amount;
+        $.ajax({
+            method: "POST",
+            url: "https://dustpay.herokuapp.com/pay",
+            data: {
+                token: tokenData,
+                email_id: email,
+                amount: amount,
+                product_id: productID
+            },
+            error: function(err) {
+                console.log(err);
+            },
+            success(response) {
+                console.log(response);
+            }
+        });
+        // fetch('https://dustpay.herokuapp.com/pay', {
+        //   method: 'POST',
+        //   body: JSON.stringify(token),
+        // }).then(response => {
+        //   response.json().then(data => {
+        //     alert(`We are in business, ${data.email}`);
+        //   });
+        // });
+        
+    }
+    
     render() {
         return (
             <div className="layer white-overlay" active={this.props.active}>
