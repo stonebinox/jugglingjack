@@ -8,7 +8,9 @@ export class Login extends Component {
             emailError: "form-group",
             passwordError: "form-group",
             errorDisplay: "none",
-            buttonStatus: ""
+            buttonStatus: "",
+            loginButtonFlag: "block",
+            loginStatusFlag: "none"
         };
         this.loginButton = this.loginButton.bind(this);
     }
@@ -48,11 +50,19 @@ export class Login extends Component {
                             break;
                             case "AUTHENTICATE_USER":
                             that.setState({
-                                errorDisplay: "none"
+                                errorDisplay: "none",
+                                loginButtonFlag: "block",
+                                loginStatusFlag: "none"
                             });
                             that.props.onLoggedIn(true);
                             break;
                         }
+                    },
+                    beforeSend: function() {
+                        that.setState({
+                            loginButtonFlag: "none",
+                            loginStatusFlag: "block"
+                        });
                     }
                 });
             }
@@ -70,6 +80,9 @@ export class Login extends Component {
     }
 
     render() {
+        setTimeout(function(){
+            $("#email").focus();
+        }, 500);
         return (
             <div className="layer white-overlay" active={this.props.active}>
                 <div className="container">
@@ -92,8 +105,11 @@ export class Login extends Component {
                                 <input type="password" name="password" id="password" className="form-control" placeholder="********" required />
                             </div>
                             <br/>
-                            <div className="text-center">
+                            <div className="text-center" style={{display: this.state.loginButtonFlag}}>
                                 <button type="button" className="btn btn-primary bold" onClick={this.loginButton}>Login</button>&nbsp;&nbsp;<button type="button" className="btn btn-default bold">Don't have an account?</button>
+                            </div>
+                            <div className="alert alert-info text-center" style={{display: this.state.loginStatusFlag}}>
+                                <strong>Please Wait</strong> Checking your details ...
                             </div>
                         </form>
                     </div>

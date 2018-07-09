@@ -29,10 +29,10 @@ export class Navbar extends Component {
             var lFlag = "none";
             var liFlag = "block";
         }
-        this.state = {
+        this.setState({
             logoutFlag: lFlag,
             linkFlag: liFlag,
-        };
+        });
     }
 
     handleLogoClick() {
