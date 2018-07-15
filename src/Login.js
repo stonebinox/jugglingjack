@@ -15,6 +15,36 @@ export class Login extends Component {
         this.loginButton = this.loginButton.bind(this);
     }
 
+    getUserData(email) {
+        var that = this;
+        $.ajax({
+            url: "https://jugglingjack-backend.herokuapp.com/api/getUserID",
+            method: "get",
+            data: {
+                user_email: email
+            },
+            error: function(error) {
+                console.log(error);
+                alert("Something went wrong while fetching user data. Please refresh the page and try again.");
+            },
+            success: function(response) {
+                response = $.trim(response);
+                switch (response) {
+                    case "INVALID_PARAMETERS":
+                    default:
+                    if (!isNaN(response)) {
+                        that.props.onUserID(response);
+                    }
+                    else {
+                        console.log(response);
+                        alert("Something went wrong while fetching user data. Please refresh the page and try again.");
+                    }
+                    break;
+                }
+            }
+        });
+    }
+
     loginButton() {
         var email = document.login.email.value;
         email = email.trim();
@@ -45,7 +75,9 @@ export class Login extends Component {
                             case "INVALID_USER_CREDENTIALS":
                             default:
                             that.setState({
-                                errorDisplay: "block"
+                                errorDisplay: "block",
+                                loginButtonFlag: "block",
+                                loginStatusFlag: "none"
                             });
                             break;
                             case "AUTHENTICATE_USER":
@@ -55,6 +87,7 @@ export class Login extends Component {
                                 loginStatusFlag: "none"
                             });
                             that.props.onLoggedIn(true);
+                            that.getUserData(email);
                             break;
                         }
                     },

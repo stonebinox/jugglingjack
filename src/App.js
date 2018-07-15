@@ -17,11 +17,13 @@ class App extends Component {
       loginFlag: "false",
       signupFlag: "false",
       dashboardFlag: "false",
-      loginStatus: false
+      loginStatus: false,
+      user_id: null
     };
     this.changeState = this.changeState.bind(this);
     this.handleSession = this.handleSession.bind(this);
     this.logout = this.logout.bind(this);
+    this.onUserID = this.onUserID.bind(this);
   }
 
   changeState(data) {
@@ -111,16 +113,22 @@ class App extends Component {
     this.handleSession(false);
   }
 
+  onUserID(userID) {
+    this.setState({
+      user_id: userID
+    });
+  }
+
   render() {
     return (
       <div>
         <Navbar onStateChanged={this.changeState} loggedIn={this.state.loginStatus} logout={this.logout}/>
         <Home active={this.state.homeFlag} />
-        <Jobs active={this.state.jobsFlag} />
+        <Jobs active={this.state.jobsFlag} userID={this.state.user_id} />
         <Pricing active={this.state.pricingFlag} />
-        <Login active={this.state.loginFlag} onLoggedIn={this.handleSession} />
+        <Login active={this.state.loginFlag} onLoggedIn={this.handleSession} onUserID={this.onUserID} />
         <SignUp active={this.state.signupFlag} layerLoad={this.changeState} />
-        <Dashboard active={this.state.dashboardFlag} />
+        <Dashboard active={this.state.dashboardFlag} userID={this.state.user_id} />
       </div>
     );
   }

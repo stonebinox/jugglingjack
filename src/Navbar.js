@@ -66,7 +66,7 @@ export class Navbar extends Component {
                             <li><a href="#home" onClick={this.handleLogoClick}><img src="JJ-Wordmark.png" alt="Juggling Jack" className="img-responsive" width="115" /></a></li>
                         </ul>
                         <ul className="nav navbar-nav navbar-right">
-                            <li style={{display: this.state.linkFlag}}><a href="javascript:void(0)" className="navlinks" onClick={() => this.setLayer('jobs')}>Jobs</a></li>
+                            <li><a href="javascript:void(0)" className="navlinks" onClick={() => this.setLayer('jobs')}>Jobs</a></li>
                             <li style={{display: this.state.linkFlag}}><a href="javascript:void(0)" className="navlinks" onClick={() => this.setLayer('pricing')}>Pricing</a></li>
                             <li style={{display: this.state.linkFlag}}><a href="javascript:void(0)" className="navlinks">Who is a Juggling Jack?</a></li>
                             <li style={{display: this.state.linkFlag}}><a href="javascript:void(0)" className="navlinks" onClick={() => this.setLayer('login')}>Login</a></li>
