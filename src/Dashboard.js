@@ -108,7 +108,6 @@ export class Dashboard extends Component {
                     });
                     break;
                     default:
-                    console.log(response);
                     response = JSON.parse(response);
                     that.setState({
                         companyData: response

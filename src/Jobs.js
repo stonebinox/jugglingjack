@@ -29,27 +29,24 @@ export class Jobs extends Component {
                 that.setState({
                     errorDisplay: "none"
                 });
-                if (typeof(response) === "object") {
+                response = $.trim(response);
+                console.log(response);
+                switch (response) {
+                    case "INVALID_PARAMETERS":
+                    that.setState({
+                        errorDisplay: "block"
+                    });
+                    break;
+                    default:
                     var applications = that.state.applicationsArray.slice();
                     applications.push(response);
                     that.setState({
                         applicationsArray: applications
                     });
-                }
-                else {
-                    response = $.trim(response);
-                    console.log(response);
-                    switch (response) {
-                        case "INVALID_PARAMETERS":
-                        default:
-                        that.setState({
-                            errorDisplay: "block"
-                        });
-                        break;
-                        case "NO_APPLICATIONS_FOUND":
-                        //do nothing
-                        break;
-                    }
+                    break;
+                    case "NO_APPLICATIONS_FOUND":
+                    //do nothing
+                    break;
                 }
             }
         });
