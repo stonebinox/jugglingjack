@@ -10,11 +10,33 @@ export class Dashboard extends Component {
             buttonClass: "btn btn-primary btn-sm",
             userData: null,
             errorDisplay: "none",
-            employerDisplay: "block",
-            generalistDisplay: "none"
+            employerDisplay: "none",
+            generalistDisplay: "none",
+            companyData: null,
+            user_id: null
         };
         this.getUser = this.getUser.bind(this);
         this.parseUserData = this.parseUserData.bind(this);
+        this.getCompanyData = this.getCompanyData.bind(this);
+        this.activateApplication = this.activateApplication.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            user_id: nextProps.userID
+        });
+        if (nextProps.userID != null) {
+            var that = this;
+            setTimeout(function(){
+                that.getUser();
+            },500);
+        }
+        else {
+            this.setState({
+                userData: null,
+                companyData: null
+            });
+        }
     }
 
     getUser() {
@@ -23,7 +45,7 @@ export class Dashboard extends Component {
             url: 'https://jugglingjack-backend.herokuapp.com/api/getUser',
             method: "get",
             data: {
-                user_id: this.props.user_id
+                user_id: that.state.user_id
             },
             error: function(error) {
                 console.log(error);
@@ -35,23 +57,62 @@ export class Dashboard extends Component {
                 that.setState({
                     errorDisplay: "none"
                 });
-                if (typeof(response) == "object") {
+                response = $.trim(response);
+                switch (response) {
+                    case "INVALID_PARAMETERS":
+                    console.log(response);
+                    that.setState({
+                        errorDisplay: "block"
+                    });
+                    break;
+                    default:
+                    response = JSON.parse(response);
                     that.setState({
                         userData: response
                     });
+                    that.getCompanyData();
                     that.parseUserData();
+                    break;
                 }
-                else {
-                    response = $.trim(response);
-                    switch (response) {
-                        case "INVALID_PARAMETERS":
-                        default:
-                        console.log(response);
-                        that.setState({
-                            errorDisplay: "block"
-                        });
-                        break;
-                    }
+            }
+        });
+    }
+
+    getCompanyData() {
+        var userID = this.state.userData.iduser_master;
+        var that = this;
+        $.ajax({
+            url: "https://jugglingjack-backend.herokuapp.com/api/getCompanyFromUserID",
+            method: "get",
+            data: {
+                user_id: userID
+            },
+            error: function(error) {
+                console.log(error);
+                that.setState({
+                    errorDisplay: "block"
+                });
+            },
+            success: function(response) {
+                that.setState({
+                    errorDisplay: "none"
+                });
+                response = $.trim(response);
+                switch (response) {
+                    case "INVALID_PARAMETERS":
+                    case "INVALID_USER_ID":
+                    case "INVALID_COMPANY_ID":
+                    console.log(response);
+                    that.setState({
+                        errorDisplay: "block"
+                    });
+                    break;
+                    default:
+                    response = JSON.parse(response);
+                    that.setState({
+                        companyData: response
+                    });
+                    break;
                 }
             }
         });
@@ -60,14 +121,67 @@ export class Dashboard extends Component {
     parseUserData() {
         if (this.state.userData != null) {
             var user = this.state.userData;
-            var plan = user.plan_master_idplan_master;
-            var planID = plan.idplan_master;
-            if (plan != 2) {
+            var admin = user.admin_master_idadmin_master;
+            var adminID = admin.idadmin_master;
+            if (adminID != 2) {
                 this.setState({
                     employerDisplay: "none",
                     generalistDisplay: "block"
                 });
             }
+            else {
+                this.setState({
+                    employerDisplay: "block",
+                    generalistDisplay: "none"
+                });
+            }
+        }
+    }
+
+    activateApplication() {
+        if (this.state.companyData != null) {
+            var that = this;
+            $.ajax({
+                url: "https://jugglingjack-backend.herokuapp.com/api/createApplication",
+                method: "post",
+                data: {
+                    company_id: that.state.companyData.idcompany_master,
+                    application_title: that.state.userData.admin_master_idadmin_master.admin_description,
+                    application_description: ""
+                },
+                error: function(error) {
+                    console.log(error);
+                    that.setState({
+                        errorDisplay: "block"
+                    });
+                },
+                success: function(response) {
+                    that.setState({
+                        errorDisplay: "none"
+                    });
+                    response = $.trim(response);
+                    console.log(response);
+                    switch (response) {
+                        case "INVALID_PARAMETERS":
+                        case "INVALID_COMPANY_ID":
+                        default:
+                        that.setState({
+                            errorDisplay: "block"
+                        });
+                        break;
+                        case "APPLICATION_CREATED":
+                        that.setState({
+                            errorDisplay: "none",
+                            buttonLabel: "Deactivate application",
+                            buttonClass: "btn btn-warning btn-sm"
+                        });
+                        break;
+                    }
+                }
+            });
+        }
+        else {
+            this.getCompanyData();
         }
     }
 
@@ -76,14 +190,14 @@ export class Dashboard extends Component {
             <div className="layer white-overlay" active={this.props.active}>
                 <div className="container">
                     <h3 className="text-center">Welcome</h3>
+                    <div className="alert alert-danger text-center" style={{display: this.state.errorDisplay, marginTop: "20px"}}>
+                        <strong>Problem</strong> Something went wrong while loading some data. Please refresh the page and try again.
+                    </div>
                     <div className="well text-center" style={{display: this.state.employerDisplay}}>
                         <span className="badge">{this.state.applicationCount} active application(s)</span>
                         <br/>
                         <br/>
-                        <button type="button" className={this.state.buttonClass}>{this.state.buttonLabel}</button>
-                        <div className="alert alert-danger text-center" style={{display: this.state.errorDisplay, marginTop: "20px"}}>
-                            <strong>Problem</strong> Something went wrong while loading some data. Please refresh the page and try again.
-                        </div>
+                        <button type="button" className={this.state.buttonClass} onClick={this.activateApplication}>{this.state.buttonLabel}</button>
                     </div>
                     <hr/>
                     <div className="panel panel-warning" style={{display: this.state.employerDisplay}}>

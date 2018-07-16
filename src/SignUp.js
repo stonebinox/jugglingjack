@@ -373,7 +373,7 @@ export class SignUp extends Component {
                                     <label htmlFor="role">You</label>
                                     <select name="role" id="role" className="form-control" onChange={this.changeLayout}>
                                         <option value="-1">Select option</option>
-                                        <option value="2">are looking for a technical generalist</option>
+                                        <option value="42">are looking for a technical generalist</option>
                                         <option value="2">are looking for a non-technical generalist</option>
                                         <option value="12">are a technical generalist</option>
                                         <option value="22">are a non-technical generalist</option>

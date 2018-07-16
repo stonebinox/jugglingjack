@@ -103,7 +103,8 @@ class App extends Component {
     }
     else {
       this.setState({
-        loginStatus: false
+        loginStatus: false,
+        user_id: null
       });
       this.changeState("home");
     }
