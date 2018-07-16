@@ -40,7 +40,7 @@ export class Jobs extends Component {
                     default:
                     response = JSON.parse(response);
                     var applications = that.state.applicationsArray.slice();
-                    applications.push(response);
+                    applications = applications.concat(response);
                     that.setState({
                         applicationsArray: applications
                     });
@@ -56,29 +56,32 @@ export class Jobs extends Component {
     displayApplications() {
         if (this.state.applicationsArray.length > 0) {
             var applications = this.state.applicationsArray;
+            console.log(applications);
             var layout = (<div className="well">
                 <h3 className="text-center">Active Applications</h3>
                 {applications.map((row, index) => {
-                    var applicationID = row.idapplication_master;
-                    var applicationTitle = row.application_title;
-                    var applicationDescription = row.application_description;
-                    if (applicationDescription === "") {
-                        applicationDescription = 'No description.';
+                    if ((row != null) && (row != undefined)) {
+                        var applicationID = row.idapplication_master;
+                        var applicationTitle = row.application_title;
+                        var applicationDescription = row.application_description;
+                        if (applicationDescription === "") {
+                            applicationDescription = 'No description.';
+                        }
+                        var companyName = row.company_master_idcompany_master.company_name;
+                        return (
+                            <div className="panel panel-info" key={"jobs_" + index}>
+                                <div className="panel-heading bold">{applicationTitle}</div>
+                                <div className="panel-body">
+                                {applicationDescription}
+                                <br/>
+                                <small className="bold">{companyName}</small>
+                                </div>
+                                <div className="panel-footer text-right">
+                                    <button type="button" className="btn btn-primary btn-sm">Apply</button>
+                                </div>
+                            </div>
+                        );
                     }
-                    var companyName = row.company_master_idcompany_master.company_name;
-                    return (
-                        <div className="panel panel-info" key={"jobs_" + index}>
-                            <div className="panel-heading bold">{applicationTitle}</div>
-                            <div className="panel-body">
-                            {applicationDescription}
-                            <br/>
-                            <small className="bold">{companyName}</small>
-                            </div>
-                            <div className="panel-footer text-right">
-                                <button type="button" className="btn btn-primary btn-sm">Apply</button>
-                            </div>
-                        </div>
-                    );
                 })}
             </div>);
             return layout;
