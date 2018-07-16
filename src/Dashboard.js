@@ -13,12 +13,14 @@ export class Dashboard extends Component {
             employerDisplay: "none",
             generalistDisplay: "none",
             companyData: null,
-            user_id: null
+            user_id: null,
+            applicationData: null
         };
         this.getUser = this.getUser.bind(this);
         this.parseUserData = this.parseUserData.bind(this);
         this.getCompanyData = this.getCompanyData.bind(this);
         this.activateApplication = this.activateApplication.bind(this);
+        this.getApplications = this.getApplications.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -34,7 +36,8 @@ export class Dashboard extends Component {
         else {
             this.setState({
                 userData: null,
-                companyData: null
+                companyData: null,
+                applicationData: null
             });
         }
     }
@@ -112,10 +115,63 @@ export class Dashboard extends Component {
                     that.setState({
                         companyData: response
                     });
+                    that.getApplications();
                     break;
                 }
             }
         });
+    }
+
+    getApplications() {
+        if (this.state.companyData != null) {
+            var that = this;
+            $.ajax({
+                url: "https://jugglingjack-backend.herokuapp.com/api/getApplicationsFromCompany",
+                method: "get",
+                data: {
+                    company_id: that.state.companyData.idcompany_master
+                },
+                error: function(error) {
+                    console.log(error);
+                    that.setState({
+                        errorDisplay: "block"
+                    });
+                },
+                success: function(response) {
+                    that.setState({
+                        errorDisplay: "none"
+                    });
+                    response = $.trim(response);
+                    console.log(response);
+                    switch (response) {
+                        case "INVALID_PARAMETERS":
+                        case "INVALID_COMPANY_ID":
+                        that.setState({
+                            errorDisplay: "block"
+                        });
+                        break;
+                        case "NO_APPLICATIONS_FOUND":
+                        that.setState({
+                            buttonClass: "btn btn-primary btn-sm",
+                            buttonLabel: "Activate application",
+                            applicationData: null,
+                            applicationCount: 0
+                        });
+                        break;
+                        default:
+                        response = JSON.parse(response);
+                        that.setState({
+                            applicationData: response,
+                            applicationCount: response.length,
+                            buttonLabel: "Deactivate application",
+                            buttonClass: "btn btn-warning btn-sm"
+                        });
+
+                        break;
+                    }
+                }
+            });
+        }
     }
 
     parseUserData() {
