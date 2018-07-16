@@ -38,6 +38,7 @@ export class Jobs extends Component {
                     });
                     break;
                     default:
+                    response = JSON.parse(response);
                     var applications = that.state.applicationsArray.slice();
                     applications.push(response);
                     that.setState({
