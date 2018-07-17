@@ -444,7 +444,7 @@ export class SignUp extends Component {
                                     amount={this.state.amount * 100}
                                     image="https://stripe-images.s3.amazonaws.com/uploads/file_1BgG07KffZLOJcWolh3F4u6X.png?AWSAccessKeyId=ASIAIWVSTUX3GVF4H5ZQ&Expires=1688911608&Signature=EdRhAx58vvXD9aTPSpOCb0Ny7Gk%3D&x-amz-security-token=FQoDYXdzEO%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDEWJp9JBTMjgItjXkCK3A04M%2BdRzxPt7p1ZTqLSit0Xw8lRgUxYO%2FE%2BhbGeoF5E8NWnYwuffMV5S2ljP30hHwD8IkNKTBWEz5ghT5H21gLnIDHjIAkfrURFA0ODp%2Fe5p1SGU35ANVcbK7nPF%2BsbNaq9nqsMYSPYXoEEsnGQHvb33ClHOT1%2BBCS59shXSSivuoyg9NspHVQSusnHZBgTptkZNZax1bVzRptlPK07jFF7AZMN2Dyvj7%2B0qZYoTxBN%2FAZ4A2%2BpHplBK22mkAaht6SnARCXnAZXW9UZiRWPIbx6QJ9ni5Fu46B4aU6wzM8i%2FdVAP%2FG1Jbgi4Dl8ZH0jJWuBomC4IShOwkG6svHX9yAAnJ4lcZWO12SYjG7OjDW0q8OSR57%2FuiEdGN1PRia283kMZAWGquJBqqhHto8FmryUTEG9QZQqS38FKG7Bsj%2B8xuw1ue%2B4czaFE6WdruqxeRVT9C6Fjxpj2YEoPmSZvwe2BO1I%2F6Zh3rcN1tEUleqx57HnDxFjTbQZi7osl%2BU2npAhIQ5D6P9oOY0L573Bg2%2FGTLpoVlooIGY9FR46F2GzG7bgqJhWPB6iiFswwdQMmYG4fYUOYWf0orMqN2gU%3D"
                                     token={this.onToken}
-                                    stripeKey="pk_test_AaNN3vmVBn3clhgdqGa9CMXX"
+                                    stripeKey="pk_live_PSwDNF9BVOIuKl5BBzVXnXsa"
                                     src="https://checkout.stripe.com/checkout.js"
                                 />
                                 </div>
