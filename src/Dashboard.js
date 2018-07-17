@@ -8,6 +8,7 @@ export class Dashboard extends Component {
             applicationCount: 0,
             buttonLabel: "Activate application",
             buttonClass: "btn btn-primary btn-sm",
+            buttonClick: this.activateApplication,
             userData: null,
             errorDisplay: "none",
             employerDisplay: "none",
@@ -21,6 +22,7 @@ export class Dashboard extends Component {
         this.getCompanyData = this.getCompanyData.bind(this);
         this.activateApplication = this.activateApplication.bind(this);
         this.getApplications = this.getApplications.bind(this);
+        this.deactivateApplication = this.deactivateApplication.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -154,7 +156,8 @@ export class Dashboard extends Component {
                             buttonClass: "btn btn-primary btn-sm",
                             buttonLabel: "Activate application",
                             applicationData: null,
-                            applicationCount: 0
+                            applicationCount: 0,
+                            buttonClick: that.activateApplication
                         });
                         break;
                         default:
@@ -163,7 +166,8 @@ export class Dashboard extends Component {
                             applicationData: response,
                             applicationCount: response.length,
                             buttonLabel: "Deactivate application",
-                            buttonClass: "btn btn-warning btn-sm"
+                            buttonClass: "btn btn-warning btn-sm",
+                            buttonClick: that.deactivateApplication
                         });
 
                         break;
@@ -188,6 +192,50 @@ export class Dashboard extends Component {
                 this.setState({
                     employerDisplay: "block",
                     generalistDisplay: "none"
+                });
+            }
+        }
+    }
+
+    deactivateApplication() {
+        if (this.state.companyData != null) {
+            if (confirm("Are you sure you want to deactivate this application?")) {
+                var that = this;
+                $.ajax({
+                    url: "https://jugglingjack-backend.herokuapp.com/api/deleteApplicationFromCompanyID",
+                    method: "get",
+                    data: {
+                        company_id: that.state.companyData.idcompany_master
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        that.setState({
+                            errorDisplay: "block"
+                        });
+                    },
+                    success: function(response) {
+                        that.setState({
+                            errorDisplay: "none"
+                        });
+                        response = $.trim(response);
+                        console.log(response);
+                        switch (response) {
+                            case "INVALID_PARAMETERS":
+                            case "NO_APPLICATIONS_FOUND":
+                            that.setState({
+                                errorDisplay: "block"
+                            });
+                            break;
+                            case "APPLICATION_DELETED":
+                            that.setState({
+                                errorDisplay: "none",
+                                buttonLabel: "Activate application",
+                                buttonClass: "btn btn-primary btn-sm",
+                                buttonClick: that.activateApplication
+                            });
+                            break;
+                        }
+                    }
                 });
             }
         }
@@ -228,8 +276,10 @@ export class Dashboard extends Component {
                         that.setState({
                             errorDisplay: "none",
                             buttonLabel: "Deactivate application",
-                            buttonClass: "btn btn-warning btn-sm"
+                            buttonClass: "btn btn-warning btn-sm",
+                            buttonClick: that.deactivateApplication
                         });
+                        that.getApplications();
                         break;
                     }
                 }
@@ -252,7 +302,7 @@ export class Dashboard extends Component {
                         <span className="badge">{this.state.applicationCount} active application(s)</span>
                         <br/>
                         <br/>
-                        <button type="button" className={this.state.buttonClass} onClick={this.activateApplication}>{this.state.buttonLabel}</button>
+                        <button type="button" className={this.state.buttonClass} onClick={this.state.buttonClick}>{this.state.buttonLabel}</button>
                     </div>
                     <hr/>
                     <div className="panel panel-warning" style={{display: this.state.employerDisplay}}>
