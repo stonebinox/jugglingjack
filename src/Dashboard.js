@@ -199,45 +199,43 @@ export class Dashboard extends Component {
 
     deactivateApplication() {
         if (this.state.companyData != null) {
-            if (confirm("Are you sure you want to deactivate this application?")) {
-                var that = this;
-                $.ajax({
-                    url: "https://jugglingjack-backend.herokuapp.com/api/deleteApplicationFromCompanyID",
-                    method: "get",
-                    data: {
-                        company_id: that.state.companyData.idcompany_master
-                    },
-                    error: function(error) {
-                        console.log(error);
+            var that = this;
+            $.ajax({
+                url: "https://jugglingjack-backend.herokuapp.com/api/deleteApplicationFromCompanyID",
+                method: "get",
+                data: {
+                    company_id: that.state.companyData.idcompany_master
+                },
+                error: function(error) {
+                    console.log(error);
+                    that.setState({
+                        errorDisplay: "block"
+                    });
+                },
+                success: function(response) {
+                    that.setState({
+                        errorDisplay: "none"
+                    });
+                    response = $.trim(response);
+                    console.log(response);
+                    switch (response) {
+                        case "INVALID_PARAMETERS":
+                        case "NO_APPLICATIONS_FOUND":
                         that.setState({
                             errorDisplay: "block"
                         });
-                    },
-                    success: function(response) {
+                        break;
+                        case "APPLICATION_DELETED":
                         that.setState({
-                            errorDisplay: "none"
+                            errorDisplay: "none",
+                            buttonLabel: "Activate application",
+                            buttonClass: "btn btn-primary btn-sm",
+                            buttonClick: that.activateApplication
                         });
-                        response = $.trim(response);
-                        console.log(response);
-                        switch (response) {
-                            case "INVALID_PARAMETERS":
-                            case "NO_APPLICATIONS_FOUND":
-                            that.setState({
-                                errorDisplay: "block"
-                            });
-                            break;
-                            case "APPLICATION_DELETED":
-                            that.setState({
-                                errorDisplay: "none",
-                                buttonLabel: "Activate application",
-                                buttonClass: "btn btn-primary btn-sm",
-                                buttonClick: that.activateApplication
-                            });
-                            break;
-                        }
+                        break;
                     }
-                });
-            }
+                }
+            });
         }
     }
 
