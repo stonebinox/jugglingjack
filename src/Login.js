@@ -139,7 +139,7 @@ export class Login extends Component {
                             </div>
                             <br/>
                             <div className="text-center" style={{display: this.state.loginButtonFlag}}>
-                                <button type="button" className="btn btn-primary bold" onClick={this.loginButton}>Login</button>&nbsp;&nbsp;<button type="button" className="btn btn-default bold">Don't have an account?</button>
+                                <button type="button" className="btn btn-primary bold" onClick={this.loginButton}>Login</button>
                             </div>
                             <div className="alert alert-info text-center" style={{display: this.state.loginStatusFlag}}>
                                 <strong>Please Wait</strong> Checking your details ...
