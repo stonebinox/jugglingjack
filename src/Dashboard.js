@@ -141,8 +141,7 @@ export class Dashboard extends Component {
                     that.setState({
                         errorDisplay: "none"
                     });
-                    response = $.trim(response);
-                    console.log(response);
+                    response = $.trim(response);                    
                     switch (response) {
                         case "INVALID_PARAMETERS":
                         case "INVALID_COMPANY_ID":
