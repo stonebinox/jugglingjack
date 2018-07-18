@@ -123,7 +123,7 @@ export class SignUp extends Component {
                     var company = "";
                     var companyDescription = "";
                     var continueFlag = false;
-                    if (role == 2) {
+                    if ((role == 2) || (role == 42)) {
                         company = $.trim(document.signup2.company.value);
                         if (company != "") {
                             this.setState({
