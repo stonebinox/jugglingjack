@@ -279,7 +279,7 @@ export class SignUp extends Component {
     onToken = (token) => {
         var tokenData = token.id;
         var email = token.email;
-        var productID = 2;
+        var productID = 2; //to signal that this is for JJ
         var amount = this.state.amount;
         this.setState({
             payFlag: "none",
