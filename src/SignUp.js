@@ -211,7 +211,6 @@ export class SignUp extends Component {
                 signupData: data,
                 signupButtonFlag: "btn btn-success bold disabled"
             });
-            console.log(this.state.signupData);
             var that = this;
             $.ajax({
                 url: "https://jugglingjack-backend.herokuapp.com/api/signup",
@@ -233,6 +232,7 @@ export class SignUp extends Component {
                     response = $.trim(response);
                     switch (response) {
                         case "INVALID_PARAMETERS":
+                        case "ACCOUNT_ALREADY_EXISTS":
                         default:
                         if (response.indexOf("ACCOUNT_CREATED_") != -1) {
                             var sp = response.split("ACCOUNT_CREATED_");
