@@ -323,6 +323,9 @@ export class SignUp extends Component {
     }
     
     render() {
+        setTimeout(function(){
+            $("#name").focus();
+        }, 300);
         return (
             <div className="layer white-overlay" active={this.props.active}>
                 <div className="container">
