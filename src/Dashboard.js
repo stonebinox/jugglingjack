@@ -182,7 +182,7 @@ export class Dashboard extends Component {
             var user = this.state.userData;
             var admin = user.admin_master_idadmin_master;
             var adminID = admin.idadmin_master;
-            if (adminID != 2) {
+            if ((adminID != 2) && (adminID != 42)) {
                 this.setState({
                     employerDisplay: "none",
                     generalistDisplay: "block"

@@ -36,7 +36,7 @@ export class SignUp extends Component {
 
     changeLayout() {
         var role = parseInt(document.signup2.role.value);
-        if (role != 2) {
+        if ((role != 2) && (role != 42)) {
             $("#company").attr("disabled", "true");
             $("#companydesc").attr("disabled", "true");
         }
