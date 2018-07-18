@@ -159,7 +159,7 @@ export class SignUp extends Component {
                         data.company = company;
                         data.company_description = companyDescription;
                         var passedPlanID = null;
-                        if (role != 2) {
+                        if ((role != 2) && (role != 42)) {
                             passedPlanID = 2;
                         }
                         this.setState({
@@ -168,11 +168,11 @@ export class SignUp extends Component {
                             planCollapse: "panel panel-success collapse in",
                             passedPlanID: passedPlanID
                         });
-                        if (role != 2) {
+                        if ((role != 2) && (role != 42)) {
                             var that = this;
                             setTimeout(function(){
                                 that.planClick();
-                            }, 500);
+                            }, 300);
                         }
                     }
                 }
